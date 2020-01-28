@@ -20,9 +20,13 @@
             <div class="input-group-prepend"><span class="input-group-text">Sentence</span></div>
             <textarea class="form-control" v-model='sentence' ></textarea>
         </div>
-        <br />
-        <div v-if="okay" class="alert alert-success">This sentence is valid</div>
-        <div v-if="!okay" class="alert alert-danger">This sentence is invalid</div>
+        <div class="badge badge-secondary">
+            <input type="checkbox" v-model="ignoreCase" />
+            <span>Ignore case</span>
+        </div>
+        <hr />
+        <div v-if="okay" class="alert alert-success">This sentence is valid. It contains {{letterCount}} letters and {{wordCount}} words.</div>
+        <div v-if="!okay" class="alert alert-danger">This sentence is invalid.</div>
         <hr />
         <h4>Letter usage</h4>
         <span v-for="[k,v] in Object.entries(diff)">
@@ -40,13 +44,23 @@
         data: {
             'sentence' : '',
             'capacity' : lettersToHist(letters),
+            'ignoreCase' : true
         },
         computed: {
             hist : function() {
+                if (this.ignoreCase) {
+                    return textToHist(this.sentence.toLowerCase());                    
+                }
                 return textToHist(this.sentence);
             },
             diff : function() {
                 return histogramDiff(this.capacity, this.hist);
+            },
+            letterCount: function() {
+                return countLetters(this.hist);
+            },
+            wordCount: function() {
+                return countWords(this.sentence);
             },
             okay: function() {
                 for (let x of Object.values(this.diff)) {

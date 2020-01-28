@@ -1,3 +1,21 @@
+function countWords(txt) {
+    if (txt.replace(/\s+/gi, '').length == 0) {
+        return 0;
+    }
+    let re = /[^a-zA-z ]/gi;
+    let filtered = txt.replace(re, '');
+    let words = filtered.split(/\s+/gi);
+    return words.length;
+}
+
+function countLetters(hist) {
+    let result = 0;
+    for (let k of Object.values(hist)) {
+        result += k;
+    }
+    return result;
+}
+
 function textToHist(str) {
     const result = {};
     for (var t=0; t < str.length; t++) {
