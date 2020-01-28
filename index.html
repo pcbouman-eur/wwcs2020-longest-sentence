@@ -43,10 +43,13 @@
         el: '#app',
         data: {
             'sentence' : '',
-            'capacity' : lettersToHist(letters),
+            'rawLetters' : letters,
             'ignoreCase' : true
         },
         computed: {
+            capacity: function() {
+                return lettersToHist(this.rawLetters, this.ignoreCase);
+            },
             hist : function() {
                 if (this.ignoreCase) {
                     return textToHist(this.sentence.toLowerCase());                    
@@ -62,6 +65,7 @@
             wordCount: function() {
                 return countWords(this.sentence);
             },
+
             okay: function() {
                 for (let x of Object.values(this.diff)) {
                     if (x < 0) {

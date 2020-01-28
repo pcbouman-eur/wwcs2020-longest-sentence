@@ -33,10 +33,13 @@ function textToHist(str) {
     return result;
 }
 
-function lettersToHist(data) {
+function lettersToHist(data, ignoreCase) {
     const result = {};
     for (let lst of Object.values(data)) {
         for (let letter of lst) {
+            if (ignoreCase) {
+                letter = letter.toLowerCase();
+            }
             if (letter in result) {
                 result[letter]++;
             }
