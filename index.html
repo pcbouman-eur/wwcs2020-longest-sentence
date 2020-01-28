@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+  <title>The Longest Sentence</title>
+  <meta name="description" content="The Longest Sentence">
+  <meta name="author" content="WWCS2020">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h3>WWCS2020 - The Longest Sentence Game</h3>
+        <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Sentence</span></div>
+            <textarea class="form-control" v-model='sentence' ></textarea>
+        </div>
+        <br />
+        <div v-if="okay" class="alert alert-success">This sentence is valid</div>
+        <div v-if="!okay" class="alert alert-danger">This sentence is invalid</div>
+        <hr />
+        <h4>Letter usage</h4>
+        <span v-for="[k,v] in Object.entries(diff)">
+            <span v-if="v > 0" class="badge badge-success">{{v}} of {{k}}</span>
+            <span v-if="v == 0" class="badge badge-warning">{{v}} of {{k}}</span>
+            <span v-if="v < 0" class="badge badge-danger">{{v}} of {{k}}</span>
+            &nbsp;
+        </span>
+    </div>
+    <script src="letters.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+            'sentence' : '',
+            'capacity' : lettersToHist(letters),
+        },
+        computed: {
+            hist : function() {
+                return textToHist(this.sentence);
+            },
+            diff : function() {
+                return histogramDiff(this.capacity, this.hist);
+            },
+            okay: function() {
+                for (let x of Object.values(this.diff)) {
+                    if (x < 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+      });
+  </script>
+</body>
+</html>
